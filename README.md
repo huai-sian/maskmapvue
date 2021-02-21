@@ -1,24 +1,7 @@
-# maskmapvue
+# Taiwan Mask Map Search Page(Vue)
 
-## Project setup
-```
-npm install
-```
+## Demo
 
-### Compiles and hot-reloads for development
-```
-npm run serve
-```
-
-### Compiles and minifies for production
-```
-npm run build
-```
-
-### Lints and fixes files
-```
-npm run lint
-```
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+### 說明：
+運用OSM(Open Street Map)開放地圖資料以及AJAX請求台灣各地藥局之口罩存量，將地圖資料與藥局口罩數量資料呈現出來。
+提供選單搜尋及使用者輸入搜尋，篩出相對應的地區藥局資料，並且予以定位。
