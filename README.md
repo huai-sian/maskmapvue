@@ -26,8 +26,6 @@ https://huai-sian.github.io/maskmapvue/
 ## API
 
 https://raw.githubusercontent.com/kiang/pharmacies/master/json/points.json
-## 前台介紹
-
 ## 簡介
 
 以 Vue.js框架實作簡易訂房網站：
