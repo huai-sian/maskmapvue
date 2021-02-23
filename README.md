@@ -28,7 +28,7 @@ https://huai-sian.github.io/maskmapvue/
 https://raw.githubusercontent.com/kiang/pharmacies/master/json/points.json
 ## 簡介
 
-以 Vue.js框架實作簡易訂房網站：
+以 Vue.js框架實作資料搜尋及定位：
 * 功能
   - 提供選單搜尋及使用者輸入搜尋，篩出相對應的地區藥局資料，並且予以定位
   - 預設顯示方圓5公里以內的藥局
