@@ -12,7 +12,8 @@
           :class="{'nav-item__active': menuOnselect === '口罩供給現況'}">口罩供給現況</li>
           <li class="nav-item px-1 py-1 ml-2" @click="openImg;menuOnselect = '怎麼買'"
           :class="{'nav-item__active': menuOnselect === '怎麼買'}" data-toggle="modal" data-target="#instruction">怎麼買</li>
-          <li class="nav-item px-1 py-1" @click.prevent="login()"><img src="./assets/images/btn_login_base.png"></li>
+          <li class="nav-item px-1 py-1" @click.prevent="login()" v-if="user==null"><img src="./assets/images/btn_login_base.png"></li>
+          <li class="nav-item px-1 py-1" v-else>Hi {{ user }}</li>
         </ul>
         <input type="checkbox" id="navi-toggle" class="d-none input-collapse">
         <label for="navi-toggle" class="d-block d-sm-none ml-auto my-auto btn-collapse navbar-toggler" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
@@ -67,7 +68,9 @@ export default {
       userPosition: [25.033671, 121.564427],
       adultnum: 800,
       childnum: 1000,
-      query: ''
+      query: '',
+      user: null,
+      userid: null,
     };
   },
   computed: {
@@ -151,6 +154,18 @@ export default {
           console.log('pass');
           console.log(res.data);
           console.log(jwtDecode(res.data.id_token));
+          let decoded = jwtDecode(res.data.id_token);
+          this.user = decoded.name;
+          this.userid = decoded.sub;
+          // jwtDecode(res.data.id_token) sample structure:
+          /*{amr: ["linesso"] - authentication method
+            aud: "xxxx" -channel id
+            exp: xxxx -expiry date of id token
+            iat: xxxx -id token generated time
+            iss: "https://access.line.me" 
+            name: "xx"
+            picture: "xxx""
+            sub: "xxx" - id } */
         })
       }
     }
