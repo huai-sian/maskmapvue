@@ -128,12 +128,20 @@ export default {
             console.log(URL);
             window.open(URL,'_self');
     },
+    getParameterByName(name, url = window.location.href) {
+      name = name.replace(/[\[\]]/g, '\\$&');
+      var regex = new RegExp('[?&]' + name + '(=([^&#]*)|&|#|$)'),
+          results = regex.exec(url);
+      if (!results) return null;
+      if (!results[2]) return '';
+      return decodeURIComponent(results[2].replace(/\+/g, ' '));
+    },
     getInfo() {
-      if(this.$route.query.code) {
-        this.query = this.$route.query;
+      if(this.getParameterByName('code')) {
+        let code = this.getParameterByName('code');
         let data = Qs.stringify({
           grant_type: 'authorization_code',
-          code: this.query.code,
+          code: code,
           redirect_uri: 'https://huai-sian.github.io/maskmapvue/',
           client_id: '1656094239',
           client_secret: '989bbca9b6564276fe790225af008cff',
