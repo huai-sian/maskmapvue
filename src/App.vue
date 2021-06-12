@@ -129,8 +129,8 @@ export default {
             window.open(URL,'_self');
     },
     getInfo() {
-      if(this.$router.query.code) {
-        this.query = this.$router.query;
+      if(this.$route.query.code) {
+        this.query = this.$route.query;
         let data = Qs.stringify({
           grant_type: 'authorization_code',
           code: this.query.code,
