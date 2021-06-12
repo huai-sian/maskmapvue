@@ -12,7 +12,7 @@
           :class="{'nav-item__active': menuOnselect === '口罩供給現況'}">口罩供給現況</li>
           <li class="nav-item px-1 py-1 ml-2" @click="openImg;menuOnselect = '怎麼買'"
           :class="{'nav-item__active': menuOnselect === '怎麼買'}" data-toggle="modal" data-target="#instruction">怎麼買</li>
-          <li class="nav-item px-1 py-1" @click.prevent="login()" v-if="user==null"><img src="./assets/images/btn_login_base.png"></li>
+          <li class="nav-item px-1 py-1 nav-item-line" @click.prevent="login()" v-if="user==null"><img src="./assets/images/btn_login_base.png"></li>
           <li class="nav-item px-1 py-1" v-else>Hi {{ user }}</li>
         </ul>
         <input type="checkbox" id="navi-toggle" class="d-none input-collapse">
@@ -153,6 +153,8 @@ export default {
         this.$http.post('https://api.line.me/oauth2/v2.1/token', data, { headers: { 'content-type': 'application/x-www-form-urlencoded'}}).then((res) => {
           console.log('pass');
           console.log(res.data);
+          let newcookie = `access_token=${res.data['access_token']}`;
+          document.cookie = newcookie;
           console.log(jwtDecode(res.data.id_token));
           let decoded = jwtDecode(res.data.id_token);
           this.user = decoded.name;
@@ -168,11 +170,25 @@ export default {
             sub: "xxx" - id } */
         })
       }
+    },
+    getCookie(name) {
+      const value = `; ${document.cookie}`;
+      const parts = value.split(`; ${name}=`);
+      if (parts.length === 2) return parts.pop().split(';').shift();
     }
   },
   created() {
     const vm = this;
     vm.getData();
+    if(this.getCookie('access_token')) {
+      let access_token = this.getCookie('access_token');
+      this.$http.get('https://api.line.me/v2/profile', { headers: { Authorization: `Bearer ${access_token}` }}).then((res) => {
+          console.log('get cookie');
+          console.log(res.data);
+          this.user = res.data.displayName;
+          this.userid = res.data.userId;
+      })
+    }
   },
   mounted() {
     const vm = this;

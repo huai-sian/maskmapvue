@@ -53,6 +53,18 @@ body {
         top: 0.8rem;
     }
 }
+.nav-item-line {
+    display: inline-block;
+    width: 90px;
+    height: 26px;
+    cursor: pointer;
+    img {
+        display: inline-block;
+        width: 90px;
+        height: 26px;
+        cursor: pointer;
+    }
+}
 .navbar-toggler {
     padding: 0;
 }
