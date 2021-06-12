@@ -19,7 +19,6 @@ Icon.Default.mergeOptions({
 
 Vue.config.productionTip = false;
 Vue.use(VueAxios, axios);
-Vue.config.productionTip = false;
 Vue.component('Loading', Loading);
 
 new Vue({

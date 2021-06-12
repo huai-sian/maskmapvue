@@ -12,6 +12,7 @@
           :class="{'nav-item__active': menuOnselect === '口罩供給現況'}">口罩供給現況</li>
           <li class="nav-item px-1 py-1 ml-2" @click="openImg;menuOnselect = '怎麼買'"
           :class="{'nav-item__active': menuOnselect === '怎麼買'}" data-toggle="modal" data-target="#instruction">怎麼買</li>
+          <li class="nav-item px-1 py-1" @click.prevent="login()"><img src="./assets/images/btn_login_base.png"></li>
         </ul>
         <input type="checkbox" id="navi-toggle" class="d-none input-collapse">
         <label for="navi-toggle" class="d-block d-sm-none ml-auto my-auto btn-collapse navbar-toggler" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
@@ -49,6 +50,9 @@
 import $ from 'jquery';
 import Sidebar from './components/Sidebar.vue';
 import Map from './components/Map.vue';
+import Qs from 'qs';
+import jwt from 'jwt-decode';
+import jwtDecode from 'jwt-decode';
 
 export default {
   name: 'App',
@@ -62,7 +66,8 @@ export default {
       data: null,
       userPosition: [25.033671, 121.564427],
       adultnum: 800,
-      childnum: 1000
+      childnum: 1000,
+      query: ''
     };
   },
   computed: {
@@ -100,6 +105,46 @@ export default {
       } else {
         return 'Maskstatus--sufficient';
       }
+    },
+    randomString(length){
+            var result = '';
+            var characters       = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+            var charactersLength = characters.length;
+            for ( var i = 0; i < length; i++ ) {
+                result += characters.charAt(Math.floor(Math.random() * charactersLength));
+            }
+            return result;
+    },
+    login() {
+      let randomState = this.randomString(8);
+            console.log(randomState);
+            let URL = 'https://access.line.me/oauth2/v2.1/authorize?';
+            URL += '&response_type=code';
+            URL += '&client_id=1656094239';
+            URL += '&redirect_uri=https://huai-sian.github.io/maskmapvue/';
+            URL += `&state=${randomState}`;
+            URL += '&scope=profile%20openid%20email';
+            URL += 'nonce=09876xyz';
+            console.log(URL);
+            window.open(URL,'_self');
+    },
+    getInfo() {
+      if(this.$router.query.code) {
+        this.query = this.$router.query;
+        let data = Qs.stringify({
+          grant_type: 'authorization_code',
+          code: this.query.code,
+          redirect_uri: 'https://huai-sian.github.io/maskmapvue/',
+          client_id: '1656094239',
+          client_secret: '989bbca9b6564276fe790225af008cff',
+        });
+        console.log('if');
+        this.$http.post('https://api.line.me/oauth2/v2.1/token', data, { headers: { 'content-type': 'application/x-www-form-urlencoded'}}).then((res) => {
+          console.log('pass');
+          console.log(res.data);
+          console.log(jwtDecode(res.data.id_token));
+        })
+      }
     }
   },
   created() {
@@ -112,6 +157,7 @@ export default {
       const { latitude, longitude } = position.coords;
       vm.userPosition = [latitude, longitude];
     });
+    this.getInfo();
   },
 };
 </script>
