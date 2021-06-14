@@ -14,7 +14,7 @@
           :class="{'nav-item__active': menuOnselect === '怎麼買'}" data-toggle="modal" data-target="#instruction">怎麼買</li>
           <li class="nav-item px-1 py-1 nav-item-line" @click.prevent="login()" v-if="user==null"><img src="./assets/images/btn_login_base.png"></li>
           <li class="nav-item px-1 py-1" v-else>Hi {{ user }}</li>
-          <li class="nav-item px-1 py-1"><button class="btn" v-if="user!==null" @click.prevent="logout()">登出</button></li>
+          <li class="nav-item px-1 py-1"><button class="btn btn-logout" v-if="user!==null" @click.prevent="logout()">登出</button></li>
         </ul>
         <input type="checkbox" id="navi-toggle" class="d-none input-collapse">
         <label for="navi-toggle" class="d-block d-sm-none ml-auto my-auto btn-collapse navbar-toggler" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
@@ -170,6 +170,8 @@ export default {
             picture: "xxx""
             sub: "xxx" - id } */
         })
+      } else {
+        this.getloginData();
       }
     },
     getCookie(name) {
@@ -191,6 +193,17 @@ export default {
         let newcookie = `access_token=''`;
           document.cookie = newcookie;
       });
+    },
+    getloginData() {
+      if(this.getCookie('access_token')) {
+      let access_token = this.getCookie('access_token');
+      this.$http.get('https://api.line.me/v2/profile', { headers: { Authorization: `Bearer ${access_token}` }}).then((res) => {
+          console.log('get cookie');
+          console.log(res.data);
+          this.user = res.data.displayName;
+          this.userid = res.data.userId;
+      })
+    }
     }
   },
   created() {
@@ -204,15 +217,6 @@ export default {
       vm.userPosition = [latitude, longitude];
     });
     this.getInfo();
-    if(this.getCookie('access_token')) {
-      let access_token = this.getCookie('access_token');
-      this.$http.get('https://api.line.me/v2/profile', { headers: { Authorization: `Bearer ${access_token}` }}).then((res) => {
-          console.log('get cookie');
-          console.log(res.data);
-          this.user = res.data.displayName;
-          this.userid = res.data.userId;
-      })
-    }
   },
 };
 </script>

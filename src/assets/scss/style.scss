@@ -26,6 +26,17 @@ body {
         color: white;
     }
 }
+.btn-logout, .btn-logout:visited {
+    width: 6rem;
+    height: 3rem;
+    border: 2px solid $primary-darken;
+    border-radius: 5px;
+    transition: all .3s;
+    &:hover {
+        background-color: $primary-darken;
+        color: white;
+    }
+}
 .btn-collapse {
     position: relative;
     cursor: pointer;
