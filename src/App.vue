@@ -196,6 +196,14 @@ export default {
   created() {
     const vm = this;
     vm.getData();
+  },
+  mounted() {
+    const vm = this;
+    navigator.geolocation.getCurrentPosition(position => {
+      const { latitude, longitude } = position.coords;
+      vm.userPosition = [latitude, longitude];
+    });
+    this.getInfo();
     if(this.getCookie('access_token')) {
       let access_token = this.getCookie('access_token');
       this.$http.get('https://api.line.me/v2/profile', { headers: { Authorization: `Bearer ${access_token}` }}).then((res) => {
@@ -205,14 +213,6 @@ export default {
           this.userid = res.data.userId;
       })
     }
-  },
-  mounted() {
-    const vm = this;
-    navigator.geolocation.getCurrentPosition(position => {
-      const { latitude, longitude } = position.coords;
-      vm.userPosition = [latitude, longitude];
-    });
-    this.getInfo();
   },
 };
 </script>
