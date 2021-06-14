@@ -187,7 +187,7 @@ export default {
         console.log('logout');
         this.user = null;
         this.userid = null;
-        
+        console.log(res.data);
       });
     }
   },
