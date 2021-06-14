@@ -14,6 +14,7 @@
           :class="{'nav-item__active': menuOnselect === '怎麼買'}" data-toggle="modal" data-target="#instruction">怎麼買</li>
           <li class="nav-item px-1 py-1 nav-item-line" @click.prevent="login()" v-if="user==null"><img src="./assets/images/btn_login_base.png"></li>
           <li class="nav-item px-1 py-1" v-else>Hi {{ user }}</li>
+          <li class="nav-item px-1 py-1"><button class="btn" v-if="user!==null" @click.prevent="logout()">登出</button></li>
         </ul>
         <input type="checkbox" id="navi-toggle" class="d-none input-collapse">
         <label for="navi-toggle" class="d-block d-sm-none ml-auto my-auto btn-collapse navbar-toggler" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
@@ -175,6 +176,19 @@ export default {
       const value = `; ${document.cookie}`;
       const parts = value.split(`; ${name}=`);
       if (parts.length === 2) return parts.pop().split(';').shift();
+    },
+    logout() {
+      let data = Qs.stringify({
+        client_id: '1656094239',
+        client_secret: '989bbca9b6564276fe790225af008cff',
+        access_token: `${this.getCookie('access_token')}`
+      });
+      this.$http.post('https://api.line.me/oauth2/v2.1/revoke', data, { headers: { 'content-type': 'application/x-www-form-urlencoded'}}).then((res) => {
+        console.log('logout');
+        this.user = null;
+        this.userid = null;
+        
+      });
     }
   },
   created() {
