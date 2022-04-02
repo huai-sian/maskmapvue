@@ -212,8 +212,12 @@ export default {
         this.$http.get('https://api.line.me/v2/profile', { headers: { Authorization: `Bearer ${access_token}` }}).then((res) => {
             console.log('get cookie');
             console.log(res.data);
+            this.loginWith === 'line'
             this.user = res.data.displayName;
             this.userid = res.data.userId;
+        }).catch((err) => {
+          this.user = null;
+          this.userid = null;
         })
       }
     },
@@ -227,6 +231,7 @@ export default {
       auth2.signOut()
       .then(() => {
         console.log('Google User signed out.');
+        this.user = null;
       })
       .catch((err) => {
         console.log(err);
