@@ -12,7 +12,9 @@
           :class="{'nav-item__active': menuOnselect === '口罩供給現況'}">口罩供給現況</li>
           <li class="nav-item px-1 py-1 ml-2" @click="openImg;menuOnselect = '怎麼買'"
           :class="{'nav-item__active': menuOnselect === '怎麼買'}" data-toggle="modal" data-target="#instruction">怎麼買</li>
-          <GoogleSignInButton @sign-in="oAuthSignIn('google', $event)"></GoogleSignInButton>
+          <Googlesigninbutton 
+            @sign-in="oAuthSignIn('google', $event)">
+          </Googlesigninbutton>
           <li class="nav-item px-1 py-1 nav-item-line" @click.prevent="login()" v-if="user==null"><img src="./assets/images/btn_login_base.png"></li>
           <li class="nav-item px-1 py-1" v-else>Hi {{ user }}</li>
           <li class="nav-item px-1 py-1"><button class="btn btn-logout" v-if="user!==null" @click.prevent="logout()">登出</button></li>
@@ -62,7 +64,8 @@ export default {
   name: 'App',
   components: {
     Sidebar,
-    Map
+    Map,
+    Googlesigninbutton
   },
   data() {
     return {

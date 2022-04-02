@@ -20,8 +20,8 @@ export default {
   mounted() {
     window.gapi.signin2.render('google-sign-in-button', {
       scope: 'profile email',
-      width: this.width,
-      height: this.height,
+      width: '80',
+      height: '35',
       longtitle: true,
       theme: 'light',
       onsuccess: this.signIn,
