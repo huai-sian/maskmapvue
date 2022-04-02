@@ -31,8 +31,10 @@ export default {
   methods: {
     signIn(googleUser) {
       const id_token = googleUser.getAuthResponse().id_token;
+      const profile = googleUser.getBasicProfile();
+      const name = profile.getName();
       console.log('Name', googleUser.getBasicProfile().getName())
-      this.$emit('sign-in', id_token);
+      this.$emit('sign-in', { id_token, name });
     }
   }
 };

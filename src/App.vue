@@ -13,11 +13,16 @@
           <li class="nav-item px-1 py-1 ml-2" @click="openImg;menuOnselect = '怎麼買'"
           :class="{'nav-item__active': menuOnselect === '怎麼買'}" data-toggle="modal" data-target="#instruction">怎麼買</li>
           <Googlesigninbutton 
-            @sign-in="oAuthSignIn('google', $event)">
+            @sign-in="oAuthSignIn('google', $event)" v-if="user==null">
           </Googlesigninbutton>
           <li class="nav-item px-1 py-1 nav-item-line" @click.prevent="login()" v-if="user==null"><img src="./assets/images/btn_login_base.png"></li>
           <li class="nav-item px-1 py-1" v-else>Hi {{ user }}</li>
-          <li class="nav-item px-1 py-1"><button class="btn btn-logout" v-if="user!==null" @click.prevent="logout()">登出</button></li>
+          <li class="nav-item px-1 py-1">
+            <button class="btn btn-logout" v-if="user !== null && loginWith === 'google'" 
+              @click.prevent="logoutGoogle()">登出</button>
+            <button class="btn btn-logout" v-if="user !== null && loginWith === 'line'" 
+              @click.prevent="logout()">登出</button>
+          </li>
         </ul>
         <input type="checkbox" id="navi-toggle" class="d-none input-collapse">
         <label for="navi-toggle" class="d-block d-sm-none ml-auto my-auto btn-collapse navbar-toggler" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
@@ -77,6 +82,7 @@ export default {
       query: '',
       user: null,
       userid: null,
+      loginWith: ''
     };
   },
   computed: {
@@ -126,16 +132,17 @@ export default {
     },
     login() {
       let randomState = this.randomString(8);
-            console.log(randomState);
-            let URL = 'https://access.line.me/oauth2/v2.1/authorize?';
-            URL += '&response_type=code';
-            URL += '&client_id=1656094239';
-            URL += '&redirect_uri=https://huai-sian.github.io/maskmapvue/';
-            URL += `&state=${randomState}`;
-            URL += '&scope=profile%20openid%20email';
-            URL += 'nonce=09876xyz';
-            console.log(URL);
-            window.open(URL,'_self');
+      this.loginWith = 'line';
+      console.log(randomState);
+      let URL = 'https://access.line.me/oauth2/v2.1/authorize?';
+      URL += '&response_type=code';
+      URL += '&client_id=1656094239';
+      URL += '&redirect_uri=https://huai-sian.github.io/maskmapvue/';
+      URL += `&state=${randomState}`;
+      URL += '&scope=profile%20openid%20email';
+      URL += 'nonce=09876xyz';
+      console.log(URL);
+      window.open(URL,'_self');
     },
     getParameterByName(name, url = window.location.href) {
       name = name.replace(/[\[\]]/g, '\\$&');
@@ -210,8 +217,20 @@ export default {
         })
       }
     },
-    oAuthSignIn(provider, id_token) {
-      console.log(id_token)
+    oAuthSignIn(provider, obj) {
+      this.loginWith = 'google';
+      console.log(obj);
+      this.user = obj.name;
+    },
+    logoutGoogle() {
+      const auth2 = window.gapi.auth2.getAuthInstance();
+      auth2.signOut()
+      .then(() => {
+        console.log('Google User signed out.');
+      })
+      .catch((err) => {
+        console.log(err);
+      });
     }
   },
   created() {
