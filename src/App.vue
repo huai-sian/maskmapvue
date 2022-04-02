@@ -212,7 +212,7 @@ export default {
         this.$http.get('https://api.line.me/v2/profile', { headers: { Authorization: `Bearer ${access_token}` }}).then((res) => {
             console.log('get cookie');
             console.log(res.data);
-            this.loginWith === 'line'
+            this.loginWith = 'line'
             this.user = res.data.displayName;
             this.userid = res.data.userId;
         }).catch((err) => {
