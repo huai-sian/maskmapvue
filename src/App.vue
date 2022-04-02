@@ -12,6 +12,7 @@
           :class="{'nav-item__active': menuOnselect === '口罩供給現況'}">口罩供給現況</li>
           <li class="nav-item px-1 py-1 ml-2" @click="openImg;menuOnselect = '怎麼買'"
           :class="{'nav-item__active': menuOnselect === '怎麼買'}" data-toggle="modal" data-target="#instruction">怎麼買</li>
+          <GoogleSignInButton @sign-in="oAuthSignIn('google', $event)"></GoogleSignInButton>
           <li class="nav-item px-1 py-1 nav-item-line" @click.prevent="login()" v-if="user==null"><img src="./assets/images/btn_login_base.png"></li>
           <li class="nav-item px-1 py-1" v-else>Hi {{ user }}</li>
           <li class="nav-item px-1 py-1"><button class="btn btn-logout" v-if="user!==null" @click.prevent="logout()">登出</button></li>
@@ -55,6 +56,7 @@ import Map from './components/Map.vue';
 import Qs from 'qs';
 import jwt from 'jwt-decode';
 import jwtDecode from 'jwt-decode';
+import Googlesigninbutton from './components/GoogleSigninButton';
 
 export default {
   name: 'App',
@@ -196,14 +198,17 @@ export default {
     },
     getloginData() {
       if(this.getCookie('access_token')) {
-      let access_token = this.getCookie('access_token');
-      this.$http.get('https://api.line.me/v2/profile', { headers: { Authorization: `Bearer ${access_token}` }}).then((res) => {
-          console.log('get cookie');
-          console.log(res.data);
-          this.user = res.data.displayName;
-          this.userid = res.data.userId;
-      })
-    }
+        let access_token = this.getCookie('access_token');
+        this.$http.get('https://api.line.me/v2/profile', { headers: { Authorization: `Bearer ${access_token}` }}).then((res) => {
+            console.log('get cookie');
+            console.log(res.data);
+            this.user = res.data.displayName;
+            this.userid = res.data.userId;
+        })
+      }
+    },
+    oAuthSignIn(provider, id_token) {
+      console.log(id_token)
     }
   },
   created() {
