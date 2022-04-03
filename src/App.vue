@@ -206,7 +206,8 @@ export default {
         this.userid = null;
         console.log(res.data);
         let newcookie = `access_token=''`;
-          document.cookie = newcookie;
+        document.cookie = newcookie;
+        this.loginWith = '';
       });
     },
     getloginData() {
