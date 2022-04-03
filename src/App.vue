@@ -163,6 +163,7 @@ export default {
           client_secret: '989bbca9b6564276fe790225af008cff',
         });
         console.log('if');
+        this.loginWith = 'line';
         this.$http.post('https://api.line.me/oauth2/v2.1/token', data, { headers: { 'content-type': 'application/x-www-form-urlencoded'}}).then((res) => {
           console.log('pass');
           console.log(res.data);
@@ -172,6 +173,8 @@ export default {
           let decoded = jwtDecode(res.data.id_token);
           this.user = decoded.name;
           this.userid = decoded.sub;
+          
+          console.log(this.loginWith);
           // jwtDecode(res.data.id_token) sample structure:
           /*{amr: ["linesso"] - authentication method
             aud: "xxxx" -channel id
@@ -212,7 +215,7 @@ export default {
         this.$http.get('https://api.line.me/v2/profile', { headers: { Authorization: `Bearer ${access_token}` }}).then((res) => {
             console.log('get cookie');
             console.log(res.data);
-            this.loginWith = 'line'
+            this.loginWith = 'line';
             this.user = res.data.displayName;
             this.userid = res.data.userId;
         }).catch((err) => {
