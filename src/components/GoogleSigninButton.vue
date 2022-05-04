@@ -1,14 +1,14 @@
 <template>
   <div>
-    <!-- <div id="google-sign-in-button"></div> -->
-    <div id="g_id_onload"
+    <div id="google-sign-in-button"></div>
+    <!-- <div id="g_id_onload"
          data-client_id="282789078464-1efvjomt8lteont9btgp60gjo65mvebt.apps.googleusercontent.com"
          data-login_uri="https://huai-sian.github.io/maskmapvue/"
          data-auto_prompt="false">
     </div>
     <div class="g_id_signin"
         id="g_id_signin">
-    </div>
+    </div> -->
   </div>
 </template>
 
@@ -26,19 +26,34 @@ export default {
     }
   },
   mounted() {
-    window.google.accounts.id.renderButton('g_id_signin', {
-      type: 'standard',
-      size: 'large',
-      theme: 'outline',
-      text: 'Sign in with',
-      shape: 'rectangular',
-      logo_alignment: 'left',
-      callback: this.signIn,
+    // window.google.accounts.id.renderButton('g_id_signin', {
+    //   type: 'standard',
+    //   size: 'large',
+    //   theme: 'outline',
+    //   text: 'Sign in with',
+    //   shape: 'rectangular',
+    //   logo_alignment: 'left',
+    //   callback: this.signIn,
+    // });
+    window.gapi.signin2.render('google-sign-in-button', {
+      scope: 'profile email',
+      width: '80',
+      height: '35',
+      longtitle: true,
+      theme: 'light',
+      onsuccess: this.signIn,
+      onfailure: () => {}
     });
   },
   methods: {
     signIn(googleUser) {
       console.log("Encoded JWT ID token: " + googleUser);
+      const id_token = googleUser.getAuthResponse().id_token;
+      const profile = googleUser.getBasicProfile();
+      const name = profile.getName();
+      console.log('Name', googleUser.getBasicProfile().getName())
+      this.$emit('sign-in', { id_token, name });
+    
     }
   }
 };
