@@ -228,7 +228,7 @@ export default {
     oAuthSignIn(provider, obj) {
       this.loginWith = 'google';
       console.log(obj);
-      this.user = obj.name;
+      //this.user = obj.name;
     },
     logoutGoogle() {
       const auth2 = window.gapi.auth2.getAuthInstance();

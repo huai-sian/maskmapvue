@@ -26,24 +26,19 @@ export default {
     }
   },
   mounted() {
-    window.gapi.signin2.render('g_id_signin', {
+    window.google.accounts.id.renderButton('g_id_signin', {
       type: 'standard',
       size: 'large',
       theme: 'outline',
       text: 'Sign in with',
       shape: 'rectangular',
       logo_alignment: 'left',
-      onsuccess: this.signIn,
-      onfailure: () => {}
+      callback: this.signIn,
     });
   },
   methods: {
     signIn(googleUser) {
-      const id_token = googleUser.getAuthResponse().id_token;
-      const profile = googleUser.getBasicProfile();
-      const name = profile.getName();
-      console.log('Name', googleUser.getBasicProfile().getName())
-      this.$emit('sign-in', { id_token, name });
+      console.log("Encoded JWT ID token: " + googleUser);
     }
   }
 };

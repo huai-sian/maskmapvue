@@ -24,11 +24,16 @@ Vue.component('Loading', Loading);
 new Vue({
   created() {
     // Google Sign-in initial
-    window.gapi.load('auth2', () => {
-      window.gapi.auth2.init({
-        client_id: '282789078464-1efvjomt8lteont9btgp60gjo65mvebt.apps.googleusercontent.com',
+    // window.gapi.load('auth2', () => {
+    //   window.gapi.auth2.init({
+    //     client_id: '282789078464-1efvjomt8lteont9btgp60gjo65mvebt.apps.googleusercontent.com',
+    //   });
+    // });
+    window.onload = function () {
+      google.accounts.id.initialize({
+        client_id: "282789078464-1efvjomt8lteont9btgp60gjo65mvebt.apps.googleusercontent.com",
       });
-    });
+    }
   },
   render: (h) => h(App),
 }).$mount('#app');
