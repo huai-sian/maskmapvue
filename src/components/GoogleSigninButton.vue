@@ -52,8 +52,8 @@ export default {
       const profile = googleUser.getBasicProfile();
       const name = profile.getName();
       console.log('Name', googleUser.getBasicProfile().getName())
-      this.$emit('sign-in', { id_token, name });
-    
+      this.$emit('sign-in', {googleUser, id_token, name });
+
     }
   }
 };

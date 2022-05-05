@@ -225,9 +225,9 @@ export default {
         })
       }
     },
-    oAuthSignIn(provider, obj) {
+    oAuthSignIn(res, provider, obj) {
       this.loginWith = 'google';
-      console.log(obj);
+      console.log(res);
       //this.user = obj.name;
     },
     logoutGoogle() {
